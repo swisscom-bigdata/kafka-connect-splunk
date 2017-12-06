@@ -23,6 +23,16 @@ import org.slf4j.*;
 import java.io.*;
 import java.util.Map;
 
+/**
+ * Event is an abstract class that represents a bare bones implementation of a Splunk Event. Every event that arrives
+ * in Splunk must have a time, host, index, source and sourcetype.
+ * <p>
+ * This class contains getter and setter methods with a few convenience functions.
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class Event {
     static final String TIME = "time";
@@ -51,6 +61,18 @@ public abstract class Event {
     @JsonIgnore
     private Object tied; // attached object
 
+    /**
+     * Constructor implements Event with 2 parameters.
+     *
+     * @param eventData      Object representation of the event itself without all the extras. Event Data Only
+     * @param tiedObj        Object representation of the entire Record being constructed into an Event.
+     *                       Within the Kafka Connect project this class will be of type
+     *                       <a href="https://kafka.apache.org/10/javadoc/org/apache/kafka/connect/sink/SinkRecord.html">SinkRecord</a>SinkRecord
+     *
+     * @since           1.0
+     * @see JsonEvent
+     * @see RawEvent
+     */
     public Event(Object eventData, Object tiedObj) {
         checkEventData(eventData);
 
@@ -62,6 +84,13 @@ public abstract class Event {
     Event() {
     }
 
+    /**
+     * Setter implementation of Event. Data passed in is validated to be an acceptable String and then
+     *
+     * @param  data     Object representation of the event itself without all the extras. Event Data Only
+     * @return Event    Current representation of Event.
+     * @since           1.0
+     */
     public final Event setEvent(final Object data) {
         checkEventData(data);
         event = data;
