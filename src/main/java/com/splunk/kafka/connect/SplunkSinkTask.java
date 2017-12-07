@@ -1,6 +1,10 @@
 package com.splunk.kafka.connect;
 
+import com.splunk.cloudfwd.Connection;
+import com.splunk.cloudfwd.ConnectionCallbacks;
+import com.splunk.cloudfwd.Connections;
 import com.splunk.hecclient.*;
+import java.io.IOException;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.connect.errors.RetriableException;
@@ -8,6 +12,7 @@ import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
 
 import java.util.*;
+import java.util.logging.Level;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +20,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by kchen on 9/21/17.
  */
-public final class SplunkSinkTask extends SinkTask implements PollerCallback {
+public final class SplunkSinkTask extends SinkTask implements PollerCallback, ConnectionCallbacks {
     private static final Logger log = LoggerFactory.getLogger(SplunkSinkTask.class);
     private static final long flushWindow = 30 * 1000; // 30 seconds
 
@@ -33,7 +38,12 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
         }
         tracker = new KafkaRecordTracker();
         bufferedRecords = new ArrayList<>();
-
+        try{
+            Connection c = CloudfwdConnection.create(connectorConfig, this);
+        } catch (IOException ex) {
+            log.error("failed to create cloudfwd connection: {}", ex.getMessage(), ex);
+            
+        }
         log.info("kafka-connect-splunk task starts with config={}", connectorConfig);
     }
 
@@ -210,12 +220,14 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
         return "1.0.0";
     }
 
+    @Override
     public void onEventCommitted(final List<EventBatch> batches) {
         // for (final EventBatch batch: batches) {
             // assert batch.isCommitted();
         // }
     }
 
+    @Override
     public void onEventFailure(final List<EventBatch> batches, Exception ex) {
         for (EventBatch batch: batches) {
             tracker.addFailedEventBatch(batch);
@@ -301,5 +313,30 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
                 return Hec.newHecWithoutAck(connectorConfig.getHecConfig(), this);
             }
         }
+    }
+
+    @Override
+    public void acknowledged(com.splunk.cloudfwd.EventBatch events) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void failed(com.splunk.cloudfwd.EventBatch events, Exception ex) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void checkpoint(com.splunk.cloudfwd.EventBatch events) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void systemError(Exception e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void systemWarning(Exception e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
