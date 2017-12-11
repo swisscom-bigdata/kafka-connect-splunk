@@ -85,7 +85,8 @@ public abstract class Event {
     }
 
     /**
-     * Setter implementation of Event. Data passed in is validated to be an acceptable String and then
+     * Event is the data portion of the Event Record. Data passed in is validated to be an acceptable String and the byte[]
+     * representation of the Event is cleared as the Event representation has changed.
      *
      * @param  data     Object representation of the event itself without all the extras. Event Data Only
      * @return Event    Current representation of Event.
@@ -98,41 +99,87 @@ public abstract class Event {
         return this;
     }
 
+    /**
+     * Tied is the full Record Object with associated meta-data.
+     *
+     * @param tied      Object representation of the event with associated meta-data.
+     * @return Event    Current representation of Event.
+     * @since           1.0
+     */
     public final Event setTied(final Object tied) {
         this.tied = tied;
         return this;
     }
 
+    /**
+     * Time is the Long representation of the event time in epoch format. This is to be later used as the time field in
+     * an indexed Splunk Event.
+     *
+     * @param epochMillis   Long representation of the record event time.
+     * @return Event        Current representation of Event.
+     * @since               1.0
+     */
     public final Event setTime(final long epochMillis) {
         this.time = epochMillis;
         invalidate();
         return this;
     }
 
+    /**
+     * Source is the default field used within an indexed Splunk event. The source of an event is the name of the file, stream
+     * or other input from which the event originates
+     *
+     * @param source    String representation of the record event source.
+     * @return Event    Current representation of Event.
+     * @since           1.0
+     */
     public final Event setSource(final String source) {
         this.source = source;
         invalidate();
         return this;
     }
 
+    /**
+     * Sourcetype is the default field used within an indexed Splunk event. The source type of an event is the format
+     * of the data input from which it originates.The source type determines how your data is to be formatted.
+     *
+     * @param sourcetype  String representation of the record event sourcetype.
+     * @return Event      Current representation of Event.
+     * @since             1.0
+     */
     public final Event setSourcetype(final String sourcetype) {
         this.sourcetype = sourcetype;
         invalidate();
         return this;
     }
 
+    /**
+     * Host is the default field used within an indexed Splunk event. An event host value is typically the hostname,
+     * IP address, or fully qualified domain name of the network host from which the event originated. The host value
+     * lets you locate data originating from a specific device.
+     *
+     * @param host        String representation of the host machine which generated the event.
+     * @return Event      Current representation of Event.
+     * @since             1.0
+     */
     public final Event setHost(final String host) {
         this.host = host;
         invalidate();
         return this;
     }
 
+    /**
+     * Index is a required field used to send an event to particular <a href=http://docs.splunk.com/Documentation/Splunk/7.0.0/Indexer/Aboutindexesandindexers>Splunk Index</>.
+     *
+     * @param index       String representation of the Splunk index
+     * @return Event      Current representation of Event.
+     * @since             1.0
+     */
     public final Event setIndex(final String index) {
         this.index = index;
         invalidate();
         return this;
     }
-
 
     public final Long getTime() {
         return time;
