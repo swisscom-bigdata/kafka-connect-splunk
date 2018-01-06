@@ -15,6 +15,15 @@
  */
 package com.splunk.hecclient;
 
+/**
+ * JsonEventBatch is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class JsonEventBatch extends EventBatch {
     public static final String endpoint = "/services/collector/event";
     public static final String contentType = "application/json; profile=urn:splunk:event:1.0; charset=utf-8";

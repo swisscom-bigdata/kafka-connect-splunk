@@ -1,3 +1,13 @@
+package com.splunk.hecclient;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+
 /*
  * Copyright 2017 Splunk, Inc..
  *
@@ -13,10 +23,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.splunk.hecclient;
-
 /**
- * HecException is
+ * DoubleSerializer is
  * <p>
  * This class contains
 
@@ -24,14 +32,11 @@ package com.splunk.hecclient;
  * @version     1.0
  * @since       1.0
  */
-public class HecException extends RuntimeException {
-    private static final long serialVersionUID = 34L;
+public class DoubleSerializer extends JsonSerializer<Double> {
 
-    public HecException(String message) {
-        super(message);
-    }
-
-    public HecException(String message, Throwable cause) {
-        super(message, cause);
+    @Override
+    public void serialize(Double value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        String d = new BigDecimal(value).setScale(6, BigDecimal.ROUND_HALF_UP).toPlainString();
+        jgen.writeNumber(d);
     }
 }

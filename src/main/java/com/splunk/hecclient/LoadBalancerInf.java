@@ -15,6 +15,15 @@
  */
 package com.splunk.hecclient;
 
+/**
+ * LoadBalancerInf is
+ * <p>
+ * This interface contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public interface LoadBalancerInf {
     void add(HecChannel channel);
     void remove(HecChannel channel);

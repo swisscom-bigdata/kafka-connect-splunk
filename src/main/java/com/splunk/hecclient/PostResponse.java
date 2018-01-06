@@ -17,9 +17,18 @@ package com.splunk.hecclient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * PostResponse is
+ * <p>
+ * This class contains
+ * / {"text":"Success","code":0,"ackId":7}
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 final class PostResponse {
-    // {"text":"Success","code":0,"ackId":7}
     private String text;
     private int code = -1;
     private long ackId = -1;

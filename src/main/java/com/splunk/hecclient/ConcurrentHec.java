@@ -24,7 +24,13 @@ import java.util.List;
 import java.util.concurrent.*;
 
 /**
- * Created by kchen on 10/27/17.
+ * ConcurrentHec is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
  */
 public class ConcurrentHec implements HecInf {
     private static final Logger log = LoggerFactory.getLogger(ConcurrentHec.class);

@@ -17,6 +17,15 @@ package com.splunk.hecclient;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 
+/**
+ * Hec is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public class Hec implements HecInf {
     private HecConfig clientConfig;
     private LoadBalancerInf loadBalancer;

@@ -17,6 +17,15 @@ package com.splunk.hecclient;
 
 import org.apache.http.client.utils.URIBuilder;
 
+/**
+ * RawEventBatch is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class RawEventBatch extends EventBatch {
     public static final String endpoint = "/services/collector/raw";
     public static final String contentType = "text/plain; profile=urn:splunk:event:1.0; charset=utf-8";

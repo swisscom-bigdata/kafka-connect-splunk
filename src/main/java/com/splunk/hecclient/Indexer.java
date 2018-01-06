@@ -30,6 +30,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * Indexer is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 final class Indexer implements IndexerInf {
     private static final Logger log = LoggerFactory.getLogger(Indexer.class);
 
@@ -163,7 +172,7 @@ final class Indexer implements IndexerInf {
 
         // log.info("event posting, channel={}, cookies={}", channel, resp.getHeaders("Set-Cookie"));
         int status = resp.getStatusLine().getStatusCode();
-        // FIXME 503 server is busy backpressure
+        // FIXME 503 server is busy back pressure
         if (status != 200 && status != 201) {
             if (status == 503) {
                 logBackPressure();

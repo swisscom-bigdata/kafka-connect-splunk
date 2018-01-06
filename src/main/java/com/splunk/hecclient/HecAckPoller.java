@@ -28,7 +28,15 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
-// HecAckPoller, it is multi-thread safe class
+/**
+ * HecAckPoller is a multi-thread safe class that
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class HecAckPoller implements Poller {
     private static final Logger log = LoggerFactory.getLogger(HecAckPoller.class);
     private static final ObjectMapper jsonMapper = new ObjectMapper();
@@ -128,7 +136,7 @@ public final class HecAckPoller implements Poller {
         }
 
         if (channelEvents.get(resp.getAckId()) != null) {
-            log.error("ackId already exists for channel={} index={}", channel, channel.getIndexer());
+            log.error("ackId={} already exists for channel={} index={}", resp.getAckId(), channel, channel.getIndexer());
             return;
         }
 
@@ -228,7 +236,7 @@ public final class HecAckPoller implements Poller {
                 String resp = channel.executeHttpRequest(request);
                 handleAckPollResponse(resp, channel);
             } catch (Exception ex) {
-                String msg = String.format("failed to poll ack for channel={} on indexer={}", channel, channel.getIndexer());
+                String msg = String.format("failed to poll ack for channel=%s on indexer=%s", channel, channel.getIndexer());
                 log.error(msg, ex);
             }
         }

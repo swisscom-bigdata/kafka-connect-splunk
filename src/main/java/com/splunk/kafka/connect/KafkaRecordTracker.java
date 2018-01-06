@@ -24,6 +24,15 @@ import org.apache.kafka.connect.sink.SinkRecord;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * KafkaRecordTracker is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 final class KafkaRecordTracker {
     private Map<TopicPartition, TreeMap<Long, EventBatch>> all; // TopicPartition + Long offset represents the SinkRecord
     private long total;
@@ -52,8 +61,11 @@ final class KafkaRecordTracker {
                     tpRecords = new TreeMap<>();
                     all.put(tp, tpRecords);
                 }
-                tpRecords.put(record.kafkaOffset(), batch);
-                total += 1;
+
+                if (!tpRecords.containsKey(record.kafkaOffset())) {
+                    tpRecords.put(record.kafkaOffset(), batch);
+                    total += 1;
+                }
             }
         }
     }
@@ -95,7 +107,7 @@ final class KafkaRecordTracker {
         return offsets;
     }
 
-    public long totalEventBatches() {
+    public long totalEvents() {
         return total;
     }
 }

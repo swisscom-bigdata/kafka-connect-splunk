@@ -17,8 +17,15 @@ package com.splunk.hecclient;
 
 import java.util.List;
 
-// The implementation of PollerCallback shall be multi-thread safe since
-// the callback may be invoked in multiple threads
+/**
+ * Poller is a "The implementation of PollerCallback shall be multi-thread safe since the callback may be invoked in multiple threads"
+ * <p>
+ * This interface contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public interface PollerCallback {
     void onEventFailure(final List<EventBatch> failure, Exception ex);
     void onEventCommitted(final List<EventBatch> committed);

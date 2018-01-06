@@ -15,6 +15,15 @@
  */
 package com.splunk.hecclient;
 
+/**
+ * Poller is
+ * <p>
+ * This interface contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public interface Poller {
     void start();
     void stop();

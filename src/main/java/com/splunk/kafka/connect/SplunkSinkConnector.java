@@ -15,6 +15,7 @@
  */
 package com.splunk.kafka.connect;
 
+import com.splunk.kafka.connect.VersionUtils;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.sink.SinkConnector;
@@ -26,6 +27,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * SplunkSinkConnector is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class SplunkSinkConnector extends SinkConnector {
     private static final Logger log = LoggerFactory.getLogger(SplunkSinkConnector.class);
     private Map<String, String> taskConfig;
@@ -58,7 +68,7 @@ public final class SplunkSinkConnector extends SinkConnector {
 
     @Override
     public String version() {
-        return "1.0.0";
+        return VersionUtils.getVersionString();
     }
 
     @Override

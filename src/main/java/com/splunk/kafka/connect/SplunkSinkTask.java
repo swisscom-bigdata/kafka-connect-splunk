@@ -16,6 +16,7 @@
 package com.splunk.kafka.connect;
 
 import com.splunk.hecclient.*;
+import com.splunk.kafka.connect.VersionUtils;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.connect.errors.RetriableException;
@@ -27,6 +28,15 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * SplunkSinkTask is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class SplunkSinkTask extends SinkTask implements PollerCallback {
     private static final Logger log = LoggerFactory.getLogger(SplunkSinkTask.class);
     private static final long flushWindow = 30 * 1000; // 30 seconds
@@ -51,7 +61,7 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
 
     @Override
     public void put(Collection<SinkRecord> records) {
-        log.info("received {} records", records.size());
+        log.debug("received {} records with total {} outstanding events tracked", records.size(), tracker.totalEvents());
 
         handleFailedBatches();
 
@@ -100,6 +110,7 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
             return;
         }
 
+        log.debug("going to handle {} failed batches", failed.size());
         long failedEvents = 0;
         // if there are failed ones, first deal with them
         for (final EventBatch batch: failed) {
@@ -112,7 +123,7 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
             send(batch);
         }
 
-        log.info("handle {} failed batches", failed.size());
+        log.info("handled {} failed batches with {} events", failed.size(), failedEvents);
         if (failedEvents * 10 > connectorConfig.maxOutstandingEvents) {
             String msg = String.format("failed events reach 10 %% of max outstanding events %d, pause the pull for a while", connectorConfig.maxOutstandingEvents);
             throw new RetriableException(new HecException(msg));
@@ -120,7 +131,7 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
     }
 
     private void preventTooManyOutstandingEvents() {
-        if (tracker.totalEventBatches() >= connectorConfig.maxOutstandingEvents) {
+        if (tracker.totalEvents() >= connectorConfig.maxOutstandingEvents) {
             String msg = String.format("max outstanding events %d have reached, pause the pull for a while", connectorConfig.maxOutstandingEvents);
             throw new RetriableException(new HecException(msg));
         }
@@ -218,7 +229,7 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
 
     @Override
     public String version() {
-        return "1.0.0";
+        return VersionUtils.getVersionString();
     }
 
     public void onEventCommitted(final List<EventBatch> batches) {
@@ -242,6 +253,11 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
 
         // meta data for /event endpoint is per event basis
         JsonEvent event = new JsonEvent(record.value(), record);
+        if (connectorConfig.useRecordTimestamp && record.timestamp() != null) {
+            // record timestamp is in milliseconds
+            event.setTime(record.timestamp() / 1000.0);
+        }
+
         Map<String, String> metas = connectorConfig.topicMetas.get(record.topic());
         if (metas != null) {
             event.setIndex(metas.get(SplunkSinkConnectorConfig.INDEX));

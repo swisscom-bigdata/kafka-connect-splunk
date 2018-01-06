@@ -29,6 +29,15 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import java.security.cert.X509Certificate;
 
+/**
+ * HttpClientBuilder is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class HttpClientBuilder {
     private int maxConnectionPoolSizePerDestination = 4;
     private int maxConnectionPoolSize = 4 * 2;

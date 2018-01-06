@@ -29,6 +29,15 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * EventBatch is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public abstract class EventBatch {
     private static Logger log = LoggerFactory.getLogger(EventBatch.class);
 
@@ -48,9 +57,13 @@ public abstract class EventBatch {
     public abstract EventBatch createFromThis();
 
     public final void addExtraFields(final Map<String, String> fields) {
+        // recalculate the batch length since we inject more meta data to each event
+        int newLength = 0;
         for (final Event event: events) {
             event.addFields(fields);
+            newLength += event.length();
         }
+        len = newLength;
     }
 
     public final boolean isTimedout(long ttl) {

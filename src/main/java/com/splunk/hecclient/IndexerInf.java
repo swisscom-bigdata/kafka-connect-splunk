@@ -18,6 +18,15 @@ package com.splunk.hecclient;
 import org.apache.http.Header;
 import org.apache.http.client.methods.HttpUriRequest;
 
+/**
+ * IndexerInf is
+ * <p>
+ * This interface contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 interface IndexerInf {
     boolean send(final EventBatch batch);
     String executeHttpRequest(final HttpUriRequest req);

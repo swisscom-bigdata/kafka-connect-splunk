@@ -21,6 +21,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
+/**
+ * ResponsePoller is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class ResponsePoller implements Poller {
     private static final Logger log = LoggerFactory.getLogger(ResponsePoller.class);
     private static final ObjectMapper jsonMapper = new ObjectMapper();

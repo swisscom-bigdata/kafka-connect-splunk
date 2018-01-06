@@ -19,6 +19,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * LoadBalancer is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class LoadBalancer implements LoadBalancerInf {
     private List<HecChannel> channels;
     private int index;

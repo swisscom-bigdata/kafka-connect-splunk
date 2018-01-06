@@ -15,6 +15,15 @@
  */
 package com.splunk.hecclient;
 
+/**
+ * HecInf is
+ * <p>
+ * This interface contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public interface HecInf {
     void send(final EventBatch batch);
     void close();

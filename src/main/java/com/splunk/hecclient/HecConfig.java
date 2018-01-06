@@ -17,6 +17,15 @@ package com.splunk.hecclient;
 
 import java.util.List;
 
+/**
+ * HecConfig is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 public final class HecConfig {
     private List<String> uris;
     private String token;

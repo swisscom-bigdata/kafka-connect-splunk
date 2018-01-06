@@ -20,6 +20,15 @@ import org.apache.http.client.methods.HttpUriRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * HecChannel is
+ * <p>
+ * This class contains
+
+ *
+ * @version     1.0
+ * @since       1.0
+ */
 final class HecChannel {
     private String id;
     private Map<String, String> chField;
