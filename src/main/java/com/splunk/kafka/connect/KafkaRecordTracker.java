@@ -82,7 +82,7 @@ final class KafkaRecordTracker {
     }
 
     // Loop through all SinkRecords for all topic partitions to
-    // find all lowest consecutive committed offsets, caculate
+    // find all lowest consecutive committed offsets, calculate
     // the topic/partition offsets and then remove them
     public Map<TopicPartition, OffsetAndMetadata> computeOffsets() {
         Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();

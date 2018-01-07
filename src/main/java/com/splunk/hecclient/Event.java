@@ -274,7 +274,7 @@ public abstract class Event {
     }
 
     /**
-     * Retrieves byte representation of Event's extended classes JSONEvent and RawEvent and writes bytes to OutputStream
+     * Retrieves byte representation of Event's extended classes JsonEvent and RawEvent and writes bytes to OutputStream
      * provided as a parameter. After the Event is written to stream a linebreak is also written to separate events.
      *
      * @param out OutputStream to write byte representation of Event(JSONEvent, RawEvent) to.
