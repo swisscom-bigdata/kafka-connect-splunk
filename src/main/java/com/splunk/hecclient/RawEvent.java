@@ -15,6 +15,9 @@
  */
 package com.splunk.hecclient;
 
+import org.apache.kafka.connect.data.Schema;
+import org.apache.kafka.connect.data.Struct;
+
 import java.io.UnsupportedEncodingException;
 
 public final class RawEvent extends Event {
@@ -40,13 +43,33 @@ public final class RawEvent extends Event {
             }
         } else if (event instanceof byte[]) {
             bytes = (byte[]) event;
-        } else {
+        } else if (event instanceof Struct) {
+            log.info("Im a Struct:");
+            log.info(event.toString());
+            String line = ((Struct) event).getString("line");
+            log.info("line=" + line);
+            Schema schema = ((Struct) event).schema();
+            if (schema != null) {
+                log.info("Schema is def not null");
+                log.info(schema.toString());
+            }
+            try {
+                String str = event.toString();
+                bytes = str.getBytes("UTF-8");
+                log.info("Encoding");
+            } catch (UnsupportedEncodingException ex) {
+                log.error("failed to encode as UTF-8", ex);
+                throw new HecException("Not UTF-8 encodable ", ex);
+            }
+        }
+        else {
             // JSON object
             try {
                 bytes = jsonMapper.writeValueAsBytes(event);
             } catch (Exception ex) {
-                log.error("Invalid json data", ex);
-                throw new HecException("Failed to json marshal the data", ex);
+                log.error(event.toString());
+                log.error("!!!Invalid json data", ex);
+                throw new HecException("!!!Failed to json marshal the data", ex);
             }
         }
 

@@ -52,11 +52,12 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
 
     @Override
     public void put(Collection<SinkRecord> records) {
-        log.debug("received {} records with total {} outstanding events tracked", records.size(), tracker.totalEvents());
+        log.info("received {} records with total {} outstanding events tracked", records.size(), tracker.totalEvents());
 
         handleFailedBatches();
 
         preventTooManyOutstandingEvents();
+
 
         bufferedRecords.addAll(records);
         if (bufferedRecords.size() < connectorConfig.maxBatchSize) {
