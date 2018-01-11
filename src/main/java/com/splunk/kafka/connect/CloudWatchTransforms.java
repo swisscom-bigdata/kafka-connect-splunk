@@ -41,7 +41,6 @@ public class CloudWatchTransforms implements Transformation<SinkRecord> {
 
     private static final String DELIMITER_CONFIG = "splunk-line-break";
     private static final String DELIMITER_DEFAULT = "####";
-    SplunkSinkConnectorConfig
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
         .define(DELIMITER_CONFIG,ConfigDef.Type.STRING, DELIMITER_DEFAULT, ConfigDef.Importance.MEDIUM,
@@ -73,10 +72,7 @@ public class CloudWatchTransforms implements Transformation<SinkRecord> {
             int index = 0;
 
             for(LogEvents logEvent:logEvents) {
-                log.info("1: " + logEvent.getUnescapedMessage());
                 Message message = mapper.readValue(logEvent.getUnescapedMessage(),Message.class);
-                log.info("2: " + mapper.writeValueAsString(message));
-
                 CloudWatchEvent tempcwe = cwe;
                 tempcwe.setLogEventIndex(index);
                 tempcwe.getLogEvents().setMessageObject(message);
@@ -86,17 +82,12 @@ public class CloudWatchTransforms implements Transformation<SinkRecord> {
                 concatenatedEvents += delimiter;
 
             }
-        //String json = mapper.writeValueAsString(cwe);
-            log.info(concatenatedEvents);
+            log.debug(concatenatedEvents);
             transformedRecord = record.newRecord(record.topic(),record.kafkaPartition(),record.keySchema(),record.key(),record.valueSchema(),concatenatedEvents,record.timestamp());
-
     }
     catch (Exception e) {
         e.printStackTrace();
     }
-
-
-
         return transformedRecord;
     }
 
