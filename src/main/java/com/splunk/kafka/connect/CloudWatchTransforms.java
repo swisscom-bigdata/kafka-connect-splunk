@@ -15,10 +15,13 @@
  */
 package com.splunk.kafka.connect;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+
+
+import com.splunk.hecclient.examples.CloudWatchEvent;
+import com.splunk.hecclient.examples.LogEvents;
+import com.splunk.hecclient.examples.Message;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.transforms.Transformation;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -26,11 +29,8 @@ import org.apache.kafka.common.config.AbstractConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 public class CloudWatchTransforms implements Transformation<SinkRecord> {
     private static final Logger log = LoggerFactory.getLogger(CloudWatchTransforms.class);
@@ -41,6 +41,7 @@ public class CloudWatchTransforms implements Transformation<SinkRecord> {
 
     private static final String DELIMITER_CONFIG = "splunk-line-break";
     private static final String DELIMITER_DEFAULT = "####";
+    SplunkSinkConnectorConfig
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
         .define(DELIMITER_CONFIG,ConfigDef.Type.STRING, DELIMITER_DEFAULT, ConfigDef.Importance.MEDIUM,
@@ -61,53 +62,42 @@ public class CloudWatchTransforms implements Transformation<SinkRecord> {
     @Override
     public SinkRecord apply(SinkRecord record) {
 
-        /*log.info("Transformation Attempted");
-        String jsonrecord = record.value().toString();
-        log.info(jsonrecord);
-        Map<String, Object> jsonMap = null;
-        try {
-            jsonMap = mapper.readValue(record.value().toString(), new TypeReference<Map<String, Object>>(){});
-        }catch (IOException ex) {
-            log.error("Error reading JSON file");
-        }
+        String concatenatedEvents = "";
+        SinkRecord transformedRecord = null;
 
-        Iterator itr = jsonMap.keySet().iterator();
+        try{
+            mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+            CloudWatchEvent cwe = mapper.readValue(record.value().toString(), CloudWatchEvent.class);
 
-        while(itr.hasNext()) {
-        Object element = itr.next();
-            log.info(element.toString());
-        }
+            LogEvents[] logEvents = cwe.getLogEventArray();
+            int index = 0;
 
-        Object logs = jsonMap.get("logEvents");
-        log.info(logs.toString());
-        */
-        try {
-            JsonNode root = mapper.readTree(record.value().toString());
-            String resultOriginal = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-            //log.info("Before Update " + resultOriginal);
+            for(LogEvents logEvent:logEvents) {
+                log.info("1: " + logEvent.getUnescapedMessage());
+                Message message = mapper.readValue(logEvent.getUnescapedMessage(),Message.class);
+                log.info("2: " + mapper.writeValueAsString(message));
 
-            JsonNode logEventsNode = root.path("logEvents");
-            String logEvents = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(logEventsNode);
-           // log.info(logEvents);
-            List<String> logEventsList = new ArrayList<String>();
+                CloudWatchEvent tempcwe = cwe;
+                tempcwe.setLogEventIndex(index);
+                tempcwe.getLogEvents().setMessageObject(message);
 
-            if(logEventsNode.isArray()) {
-                for(final JsonNode eventNode: logEventsNode) {
-                    logEventsList.add(eventNode.toString());
-                }
-            }
-
-            for(int i = 0; i < logEvents.length(); i++) {
+                concatenatedEvents += mapper.writeValueAsString(tempcwe);
+                index++;
+                concatenatedEvents += delimiter;
 
             }
+        //String json = mapper.writeValueAsString(cwe);
+            log.info(concatenatedEvents);
+            transformedRecord = record.newRecord(record.topic(),record.kafkaPartition(),record.keySchema(),record.key(),record.valueSchema(),concatenatedEvents,record.timestamp());
 
-        }catch(Exception ex) {
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
 
-        }
 
 
-
-        return record;
+        return transformedRecord;
     }
 
     @Override
