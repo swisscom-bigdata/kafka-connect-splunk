@@ -1,4 +1,4 @@
-package com.splunk.hecclient.examples;
+package com.splunk.kafka.connect.transforms;
 
 
 public class Message {

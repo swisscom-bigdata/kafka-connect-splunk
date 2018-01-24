@@ -1,7 +1,8 @@
-package com.splunk.hecclient.examples;
+package com.splunk.kafka.connect.transforms;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.splunk.kafka.connect.transforms.Message;
 
 public class LogEvents{
     private String id;
