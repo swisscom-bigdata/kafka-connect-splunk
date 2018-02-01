@@ -33,7 +33,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @version     1.0
  * @since       1.0
  */
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 final class KafkaRecordTracker {
+    private static final Logger log = LoggerFactory.getLogger(SplunkSinkTask.class);
     private Map<TopicPartition, TreeMap<Long, EventBatch>> all; // TopicPartition + Long offset represents the SinkRecord
     private long total;
     private ConcurrentLinkedQueue<EventBatch> failed;
@@ -49,6 +55,7 @@ final class KafkaRecordTracker {
             throw new RuntimeException("event batch was not failed");
         }
         failed.add(batch);
+        log.info("total failed batches {}", failed.size());
     }
 
     public void addEventBatch(final EventBatch batch) {
