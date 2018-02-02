@@ -21,6 +21,7 @@ import org.apache.kafka.connect.sink.SinkConnector;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,24 @@ public class SplunkSinkConnectorConfigTest {
             Assert.assertEquals(uu.ackPollThreads, config.getAckPollThreads());
             Assert.assertEquals(uu.trackData, config.getEnableChannelTracking());
         }
+    }
+
+    @Test
+    public void validateHecDefaultsWithWorkerConfigDefaults() {
+        UnitUtil uu = new UnitUtil();
+        Map<String, String> taskConfig = uu.createTaskConfig();
+        SplunkSinkConnectorConfig connectorConfig = new SplunkSinkConnectorConfig(taskConfig);
+        HecConfig config = new com.splunk.hecclient.HecConfig(Arrays.asList("https://dummyhost:8088"), "token");
+
+        Assert.assertEquals(!(config.getDisableSSLCertVerification()),com.splunk.kafka.connect.SplunkSinkConnectorConfig.SSL_VALIDATE_CERTIFICATES_DEFAULT);
+        Assert.assertEquals(config.getHttpKeepAlive(),com.splunk.kafka.connect.SplunkSinkConnectorConfig.HTTP_KEEPALIVE_DEFAULT);
+        Assert.assertEquals(config.getMaxHttpConnectionPerChannel(), com.splunk.kafka.connect.SplunkSinkConnectorConfig.MAX_HTTP_CONNECTION_PER_CHANNEL_DEFAULT);
+        Assert.assertEquals(config.getTotalChannels(), com.splunk.kafka.connect.SplunkSinkConnectorConfig.TOTAL_HEC_CHANNEL_DEFAULT);
+        Assert.assertEquals(config.getEventBatchTimeout(), com.splunk.kafka.connect.SplunkSinkConnectorConfig.EVENT_BATCH_TIMEOUT_DEFAULT);
+        Assert.assertEquals(config.getAckPollInterval(), com.splunk.kafka.connect.SplunkSinkConnectorConfig.ACK_POLL_INTERVAL_DEFAULT);
+        Assert.assertEquals(config.getAckPollThreads(), com.splunk.kafka.connect.SplunkSinkConnectorConfig.ACK_POLL_THREADS_DEFAULT);
+        Assert.assertEquals(config.getSocketTimeout(), com.splunk.kafka.connect.SplunkSinkConnectorConfig.SOCKET_TIMEOUT_DEFAULT);
+        Assert.assertEquals(config.getEnableChannelTracking(), com.splunk.kafka.connect.SplunkSinkConnectorConfig.TRACK_DATA_DEFAULT);
     }
 
     @Test
@@ -145,14 +164,18 @@ public class SplunkSinkConnectorConfigTest {
     @Test
     public void hasMetaDataConfigured() {
         UnitUtil uu = new UnitUtil();
+        Map<String, String> config = uu.createTaskConfig();
+
+        //check default values correctly return false
+        SplunkSinkConnectorConfig connectorConfig = new SplunkSinkConnectorConfig(config);
+        Assert.assertFalse(connectorConfig.hasMetaDataConfigured());
 
         // index, source, sourcetypes
-        Map<String, String> config = uu.createTaskConfig();
         config.put(SinkConnector.TOPICS_CONFIG, "t1");
         config.put(SplunkSinkConnectorConfig.INDEX_CONF, "i1");
         config.put(SplunkSinkConnectorConfig.SOURCE_CONF, "s1");
         config.put(SplunkSinkConnectorConfig.SOURCETYPE_CONF, "e1");
-        SplunkSinkConnectorConfig connectorConfig = new SplunkSinkConnectorConfig(config);
+        connectorConfig = new SplunkSinkConnectorConfig(config);
         Assert.assertTrue(connectorConfig.hasMetaDataConfigured());
 
         // source, sourcetype
@@ -170,6 +193,7 @@ public class SplunkSinkConnectorConfigTest {
         connectorConfig = new SplunkSinkConnectorConfig(config);
         Assert.assertTrue(connectorConfig.hasMetaDataConfigured());
     }
+
 
     @Test(expected = ConfigException.class)
     public void createWithMetaDataError() {

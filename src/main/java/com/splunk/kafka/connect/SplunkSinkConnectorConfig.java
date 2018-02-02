@@ -37,8 +37,8 @@ import java.util.*;
  * This class contains
 
  *
- * @version     1.0
- * @since       1.0
+ * @version     1.0.0
+ * @since       1.0.0
  */
 public final class SplunkSinkConnectorConfig extends AbstractConfig {
 
@@ -48,15 +48,15 @@ public final class SplunkSinkConnectorConfig extends AbstractConfig {
 
     public static final String INDEX_CONF = "splunk.indexes";
     private static final String INDEX_DOC = "Splunk index names for Kafka topic data, separated by comma";
-    private static final String INDEX_DEFAULT = "";
+    public static final String INDEX_DEFAULT = "";
 
     public static final String SOURCETYPE_CONF = "splunk.sourcetypes";
     private static final String SOURCETYPE_DOC = "Splunk sourcetype names for Kafka topic data, separated by comma";
-    private static final String SOURCETYPE_DEFAULT = "";
+    public static final String SOURCETYPE_DEFAULT = "";
 
     public static final String SOURCE_CONF = "splunk.sources";
     private static final String SOURCE_DOC = "Splunk source names for Kafka topic data, separated by comma";
-    private static final String SOURCE_DEFAULT = "";
+    public static final String SOURCE_DEFAULT = "";
 
     public static final String TOKEN_CONF = "splunk.hec.token";
     private static final String TOKEN_DOC = "The authorization token to use when writing data to splunk.";
@@ -66,11 +66,11 @@ public final class SplunkSinkConnectorConfig extends AbstractConfig {
 
     public static final String RAW_CONF = "splunk.hec.raw";
     private static final String RAW_DOC = "Flag to determine if use /raw HEC endpoint when indexing data to Splunk.";
-    private static final boolean RAW_DEFAULT = false;
+    public static final boolean RAW_DEFAULT = false;
 
     public static final String ACK_CONF = "splunk.hec.ack.enabled";
     private static final String ACK_DOC = "Flag to determine if use turn on HEC ACK when indexing data to Splunk.";
-    private static final boolean ACK_DEFAULT = false;
+    public static final boolean ACK_DEFAULT = false;
 
     public static final String SSL_TRUSTSTORE_PATH_CONF = "splunk.hec.ssl.trust.store.path";
     private static final String SSL_TRUSTSTORE_PATH_DOC = "Path on the local disk to the certificate trust store.";
@@ -81,71 +81,70 @@ public final class SplunkSinkConnectorConfig extends AbstractConfig {
     public static final String ENRICHMENT_CONF = "splunk.hec.json.event.enrichment";
     private static final String ENRICHMENT_DOC = "Enrich the JSON events by specifying key value pairs separated by comma. "
             + "Is only applicable to splunk.hec.raw=false case";
-    private static final String ENRICHMENT_DEFAULT = "";
+    public static final String ENRICHMENT_DEFAULT = "";
 
     public static final String USE_RECORD_TIMESTAMP_CONF = "splunk.hec.use.record.timestamp";
     private static final String USE_RECORD_TIMESTAMP_DOC = "Set event timestamp to Kafka record timestamp";
-    private static final boolean USE_RECORD_DEFAULT = true;
+    public static final boolean USE_RECORD_DEFAULT = true;
 
     public static final String MAX_BATCH_SIZE_CONF = "splunk.hec.max.batch.size";
     private static final String MAX_BATCH_SIZE_DOC = "Max number of Kafka record to be sent to Splunk HEC for one POST";
-    private static final int MAX_BATCH_SIZE_DEFAULT = 500;
+    public static final int MAX_BATCH_SIZE_DEFAULT = 500;
 
     public static final String MAX_OUTSTANDING_EVENTS_CONF = "splunk.hec.max.outstanding.events";
     private static final String MAX_OUTSTANDING_EVENTS_DOC = "Number of outstanding events which are not ACKed kept in memory";
-    private static final int MAX_OUTSTANDING_EVENTS_DEFAULT = 1000000;
+    public static final int MAX_OUTSTANDING_EVENTS_DEFAULT = 1000000;
 
     public static final String MAX_RETRIES_CONF = "splunk.hec.max.retries";
     private static final String MAX_RETRIES_DOC = "Number of retries for failed batches before giving up";
-    private static final int MAX_RETRIES_DEFAULT = -1;
+    public static final int MAX_RETRIES_DEFAULT = -1;
 
     public static final String LINE_BREAKER_CONF = "splunk.hec.raw.line.breaker";
     private static final String LINE_BREAKER_DOC = "Line breaker for /raw HEC endpoint. The line breaker can help Splunkd to do event breaking";
-    private static final String LINE_BREAKER_DEFAULT = "";
+    public static final String LINE_BREAKER_DEFAULT = "";
 
     public static final String SSL_VALIDATE_CERTIFICATES_CONF = "splunk.hec.ssl.validate.certs";
     private static final String SSL_VALIDATE_CERTIFICATES_DOC = "Flag to determine if ssl connections should validate the "
             + "certificate of the remote host.";
-    private static final boolean SSL_VALIDATE_CERTIFICATES_DEFAULT = true;
+    public static final boolean SSL_VALIDATE_CERTIFICATES_DEFAULT = true;
 
     public static final String SOCKET_TIMEOUT_CONF = "splunk.hec.socket.timeout";
     private static final String SOCKET_TIMEOUT_DOC = "Max duration in seconds to read / write data to network before its timeout.";
-    private static final int SOCKET_TIMEOUT_DEFAULT = 60;
+    public static final int SOCKET_TIMEOUT_DEFAULT = 60;
 
     public static final String MAX_HTTP_CONNECTION_PER_CHANNEL_CONF = "splunk.hec.max.http.connection.per.channel";
     private static final String MAX_HTTP_CONNECTION_PER_CHANNEL_DOC = "Max HTTP connections pooled for one HEC Channel "
             + "when posting events to Splunk.";
-    private static final int MAX_HTTP_CONNECTION_PER_CHANNEL_DEFAULT = 2;
+    public static final int MAX_HTTP_CONNECTION_PER_CHANNEL_DEFAULT = 2;
 
     public static final String TOTAL_HEC_CHANNEL_CONF = "splunk.hec.total.channels";
     private static final String TOTAL_HEC_CHANNEL_DOC = "Total HEC Channels used to post events to Splunk. When enabling HEC ACK, "
             + "setting to the same or 2X number of indexers is generally good.";
-    private static final int TOTAL_HEC_CHANNEL_DEFAULT = 2;
+    public static final int TOTAL_HEC_CHANNEL_DEFAULT = 2;
 
     public static final String EVENT_BATCH_TIMEOUT_CONF = "splunk.hec.event.timeout"; // seconds
     private static final String EVENT_BATCH_TIMEOUT_DOC = "Max duration in seconds to wait commit response after sending to Splunk.";
-    private static final int EVENT_BATCH_TIMEOUT_DEFAULT = 300;
+    public static final int EVENT_BATCH_TIMEOUT_DEFAULT = 300;
 
     public static final String HTTP_KEEPALIVE_CONF = "splunk.hec.http.keepalive";
     private static final String HTTP_KEEPALIVE_DOC = "Boolean configuration to enable/disable Keep-alive HTTP Connection to HEC server";
-    private static final boolean HTTP_KEEPALIVE_DEFAULT = true;
+    public static final boolean HTTP_KEEPALIVE_DEFAULT = true;
 
     public static final String ACK_POLL_INTERVAL_CONF = "splunk.hec.ack.poll.interval"; // seconds
     private static final String ACK_POLL_INTERVAL_DOC = "Interval in seconds to poll event ACKs from Splunk.";
-    private static final int ACK_POLL_INTERVAL_DEFAULT = 10;
+    public static final int ACK_POLL_INTERVAL_DEFAULT = 10;
 
     public static final String ACK_POLL_THREADS_CONF = "splunk.hec.ack.poll.threads";
     private static final String ACK_POLL_THREADS_DOC = "Number of threads used to query ACK for single task.";
-    private static final int ACK_POLL_THREADS_DEFAULT = 2;
+    public static final int ACK_POLL_THREADS_DEFAULT = 2;
 
     public static final String HEC_THREDS_CONF = "splunk.hec.threads";
     private static final String HEC_THREADS_DOC = "Number of threads used to POST events to Splunk HEC in single task";
-    private static final int HEC_THREADS_DEFAULT = 1;
+    public static final int HEC_THREADS_DEFAULT = 1;
 
     public static final String TRACK_DATA_CONF = "splunk.hec.track.data";
     private static final String TRACK_DATA_DOC = "Track data loss, latency or not. Is only applicable to splunk.hec.raw=false case";
-    private static final boolean TRACK_DATA_DEFAULT = false;
-
+    public static final boolean TRACK_DATA_DEFAULT = false;
 
     final String indexes;
     final String sourcetypes;
@@ -248,7 +247,10 @@ public final class SplunkSinkConnectorConfig extends AbstractConfig {
     }
 
     /**
-    * Configuration Method to setup all settings related to Splunk HEC Client
+    * Configuration Method to setup all settings related to Splunk HEC Client.
+    *
+    * @see      HecConfig
+    * @since    1.0.0
     */
     public HecConfig getHecConfig() {
         HecConfig config = new HecConfig(Arrays.asList(splunkURI.split(",")), splunkToken);
@@ -264,36 +266,52 @@ public final class SplunkSinkConnectorConfig extends AbstractConfig {
         return config;
     }
 
+    /**
+     * Helper function to determine if any metadata values have been provided through
+     * the Kafka Connect configuration. Used in conjunction with creating a Raw Event Batch. If Metadata is
+     * configured records must be partitioned accordingly.
+     *
+     * @see       SplunkSinkTask#handleRaw(Collection)
+     * @see       SplunkSinkTask#partitionRecords(Collection)
+     * @since     1.0.0
+     */
     public boolean hasMetaDataConfigured() {
         return (indexes != null && !indexes.isEmpty()
                 || (sources != null && !sources.isEmpty())
                 || (sourcetypes != null && !sourcetypes.isEmpty()));
     }
 
+    /**
+     * String representation of SplunkSinkConnectorConfig
+     *
+     * @return  current representation of SplunkSinkConnectorConfig
+     * @since   1.0.0
+     */
     public String toString() {
-        return "splunkURI:" + splunkURI + ", "
-                + "raw:" + raw + ", "
-                + "ack:" + ack + ", "
-                + "indexes:" + indexes + ", "
-                + "sourcetypes:" + sourcetypes + ", "
-                + "sources:" + sources + ", "
-                + "httpKeepAlive:" + httpKeepAlive + ", "
-                + "validateCertificates:" + validateCertificates + ", "
-                + "trustStorePath:" + trustStorePath + ", "
-                + "socketTimeout:" + socketTimeout + ", "
-                + "eventBatchTimeout:" + eventBatchTimeout + ", "
-                + "ackPollInterval:" + ackPollInterval + ", "
-                + "ackPollThreads:" + ackPollThreads + ", "
-                + "maxHttpConnectionPerChannel:" + maxHttpConnPerChannel + ", "
-                + "totalHecChannels:" + totalHecChannels + ", "
-                + "enrichment: " + getString(ENRICHMENT_CONF) + ", "
-                + "maxBatchSize: " + maxBatchSize + ", "
-                + "numberOfThreads: " + numberOfThreads + ", "
-                + "lineBreaker: " + lineBreaker + ", "
-                + "maxOutstandingEvents: " + maxOutstandingEvents + ", "
-                + "maxRetries: " + maxRetries + ", "
-                + "useRecordTimestamp: " + useRecordTimestamp + ", "
-                + "trackData: " + trackData;
+        return "indexes:" + indexes + ", "
+        + "sourcetypes:" + sourcetypes + ", "
+        + "sources:" + sources + ", "
+        + "splunkURI:" + splunkURI + ", "
+        + "raw:" + raw + ", "
+        + "ack:" + ack + ", "
+        + "trustStorePath:" + trustStorePath + ", "
+        + "usingTrustStore" + usingTrustStore + ","
+        + "enrichments: " + getString(ENRICHMENT_CONF) + ", "
+        + "useRecordTimestamp: " + useRecordTimestamp + ", "
+        + "maxBatchSize: " + maxBatchSize + ", "
+        + "maxOutstandingEvents: " + maxOutstandingEvents + ", "
+        + "maxRetries: " + maxRetries + ", "
+        + "lineBreaker: " + lineBreaker + ", "
+        + "validateCertificates:" + validateCertificates + ", "
+        + "socketTimeout:" + socketTimeout + ", "
+        + "maxHttpConnectionPerChannel:" + maxHttpConnPerChannel + ", "
+        + "totalHecChannels:" + totalHecChannels + ", "
+        + "eventBatchTimeout:" + eventBatchTimeout + ", "
+        + "httpKeepAlive:" + httpKeepAlive + ", "
+        + "ackPollInterval:" + ackPollInterval + ", "
+        + "ackPollThreads:" + ackPollThreads + ", "
+        + "numberOfThreads: " + numberOfThreads + ", "
+        + "trackData: " + trackData;
     }
 
     private static String[] split(String data, String sep) {

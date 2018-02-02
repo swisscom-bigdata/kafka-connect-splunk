@@ -18,13 +18,14 @@ package com.splunk.hecclient;
 import java.util.List;
 
 /**
- * HecConfig is
+ * HecConfig is the centralized configuration class used to contain all configuration settings parsed in from the
+ * Splunk Kafka Connect configuration. This configuration class is used inside the Hec class which
  * <p>
- * This class contains
+ * This class contains getter and setters for all of the Hec Config variables.
 
- *
- * @version     1.0
- * @since       1.0
+ * @see         Hec
+ * @version     1.0.0
+ * @since       1.0.0
  */
 public final class HecConfig {
     private List<String> uris;
@@ -33,7 +34,7 @@ public final class HecConfig {
     private boolean httpKeepAlive = true;
     private int maxHttpConnectionPerChannel = 2;
     private int totalChannels = 2;
-    private int eventBatchTimeout = 60 * 2; // in seconds
+    private int eventBatchTimeout = 60 * 5; // in seconds
     private int ackPollInterval = 10; // in seconds
     private int ackPollThreads = 2;
     private int socketTimeout = 60; // in seconds

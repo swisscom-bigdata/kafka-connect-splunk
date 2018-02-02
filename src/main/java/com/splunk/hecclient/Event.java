@@ -33,8 +33,8 @@ import java.util.Map;
  * Output stream creation.
 
  *
- * @version     1.0
- * @since       1.0
+ * @version     1.0.0
+ * @since       1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class Event {
@@ -73,7 +73,7 @@ public abstract class Event {
      * @param tiedObj    Object representation of the entire Record being constructed into an Event.
      *
      *
-     * @since           1.0
+     * @since           1.0.0
      * @see JsonEvent
      * @see RawEvent
      */
@@ -87,9 +87,9 @@ public abstract class Event {
     /**
      * Creates a new event with default values. Implemented for JSON deserialization.
      *
-     * @since           1.0
-     * @see JsonEvent
-     * @see RawEvent
+     * @since   1.0.0
+     * @see     JsonEvent
+     * @see     RawEvent
      */
     Event() {
     }
@@ -101,7 +101,7 @@ public abstract class Event {
      * @param  data  Object representation of the event itself without all the extras. Event Data Only
      * @return       Current representation of Event.
      * @see          Event
-     * @since        1.0
+     * @since        1.0.0
      */
     public final Event setEvent(final Object data) {
         checkEventData(data);
@@ -116,7 +116,7 @@ public abstract class Event {
      * @param tied   Object representation of the event with associated meta-data.
      * @return       Current representation of Event.
      * @see          Event
-     * @since        1.0
+     * @since        1.0.0
      */
     public final Event setTied(final Object tied) {
         this.tied = tied;
@@ -130,7 +130,7 @@ public abstract class Event {
      * @param etime Double representation of the record event in time.seconds.milliseconds
      * @return      Current representation of Event.
      * @see         Event
-     * @since       1.0
+     * @since       1.0.0
      */
     public final Event setTime(final double etime ) {
         this.time = etime;
@@ -145,7 +145,7 @@ public abstract class Event {
      * @param source String representation of the record event source.
      * @return       Current representation of Event.
      * @see          Event
-     * @since        1.0
+     * @since        1.0.0
      */
     public final Event setSource(final String source) {
         this.source = source;
@@ -160,7 +160,7 @@ public abstract class Event {
      * @param sourcetype String representation of the record event sourcetype.
      * @return           Current representation of Event.
      * @see              Event
-     * @since            1.0
+     * @since            1.0.0
      */
     public final Event setSourcetype(final String sourcetype) {
         this.sourcetype = sourcetype;
@@ -176,7 +176,7 @@ public abstract class Event {
      * @param host String representation of the host machine which generated the event.
      * @return     Current representation of Event.
      * @see        Event
-     * @since      1.0
+     * @since      1.0.0
      */
     public final Event setHost(final String host) {
         this.host = host;
@@ -190,7 +190,7 @@ public abstract class Event {
      * @param index String representation of the Splunk index
      * @return      Current representation of Event.
      * @see         Event
-     * @since       1.0
+     * @since       1.0.0
      */
     public final Event setIndex(final String index) {
         this.index = index;
@@ -246,7 +246,7 @@ public abstract class Event {
      *
      * @return  the total number of bytes of the eventEvent
      * @see     org.apache.http.HttpEntity
-     * @since   1.0
+     * @since   1.0.0
      */
     public final int length() {
         byte[] data = getBytes();
@@ -261,7 +261,7 @@ public abstract class Event {
      *
      * @see     java.io.InputStream
      * @see     java.io.SequenceInputStream
-     * @since   1.0
+     * @since   1.0.0
      */
     @JsonIgnore
     public final InputStream getInputStream() {
@@ -281,7 +281,7 @@ public abstract class Event {
      *
      * @throws  IOException
      * @see     java.io.OutputStream
-     * @since   1.0
+     * @since   1.0.0
      */
     public final void writeTo(OutputStream out) throws IOException {
         byte[] data = getBytes();
@@ -299,7 +299,7 @@ public abstract class Event {
      * @throws  HecException
      * @see     JsonEvent
      * @see     RawEvent
-     * @since   1.0
+     * @since   1.0.0
      */
     public void validate() throws HecException {
         getBytes();
@@ -309,7 +309,7 @@ public abstract class Event {
      * On changes to an Events host, index, source, sourcetype and time the event is invalidated by setting bytes
      * to null.
      *
-     * @since   1.0
+     * @since   1.0.0
      */
     public void invalidate() {
         bytes = null;
@@ -322,7 +322,7 @@ public abstract class Event {
      * @see     HecException
      * @see     JsonEvent
      * @see     RawEvent
-     * @since   1.0
+     * @since   1.0.0
      */
     public abstract byte[] getBytes() throws HecException;
 
@@ -331,7 +331,7 @@ public abstract class Event {
      * HECException is thrown.
      *
      * @throws  HecException
-     * @since   1.0
+     * @since   1.0.0
      */
     private static void checkEventData(Object eventData) {
         if (eventData == null) {
