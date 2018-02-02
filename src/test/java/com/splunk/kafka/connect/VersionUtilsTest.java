@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Splunk, Inc..
+ * Copyright 2017-2018 Splunk, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,11 @@ import org.junit.Test;
 
 public final class VersionUtilsTest {
 
+    /**
+     * Test 1 - Check null value returns VersionUtils.DEFAULT_VERSION.
+     * Test 2 - Check empty list return VersionUtils.DEFAULT_VERSION.
+     * Test 3 - Check successful read of properties file and return correct version number.
+     */
     @Test
     public void  getVersionFromProperties() {
         String version = VersionUtils.getVersionFromProperties(null);
@@ -36,12 +41,15 @@ public final class VersionUtilsTest {
         Assert.assertEquals(version, "0.1.3");
     }
 
+    /**
+     * Test 1 - Check non-existent properties file is handled.
+     * Test 2 - Check successful read of properties file and the correct amount of values present.
+     */
     @Test
     public void readResourceFile() {
         // test when the resource file does not exist 
         List<String> res = VersionUtils.readResourceFile("/randomFile");
         Assert.assertEquals(res.size(), 0);
-
 
         res = VersionUtils.readResourceFile("/testversion.properties");
         Assert.assertEquals(res.size(), 3);

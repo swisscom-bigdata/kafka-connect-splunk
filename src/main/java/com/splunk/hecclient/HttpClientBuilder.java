@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Splunk, Inc..
+ * Copyright 2017-2018 Splunk, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,6 +125,7 @@ public final class HttpClientBuilder {
 
     private SSLConnectionSocketFactory getSecureSSLConnectionFactory() {
         // use system default one
+        //TODO: implement java keystore functionality
         return null;
     }
 }

@@ -29,12 +29,12 @@ public class SplunkSinkConnectorConfigTest {
     @Test
     public void create() {
         UnitUtil uu = new UnitUtil();
-        uu.enrichementMap.put("ni", "hao");
+        uu.enrichmentMap.put("ni", "hao");
 
         Map<String, String> config = uu.createTaskConfig();
         SplunkSinkConnectorConfig connectorConfig = new SplunkSinkConnectorConfig(config);
 
-        Assert.assertEquals(uu.enrichementMap, connectorConfig.enrichments);
+        Assert.assertEquals(uu.enrichmentMap, connectorConfig.enrichments);
         Assert.assertEquals(1, connectorConfig.topicMetas.size());
         Assert.assertEquals(0, connectorConfig.topicMetas.get("mytopic").size());
         assertMeta(connectorConfig);
@@ -198,6 +198,27 @@ public class SplunkSinkConnectorConfigTest {
         Assert.assertFalse(s.contains(uu.token));
     }
 
+    @Test
+    public void checkEmptyTrustStore() {
+        UnitUtil uu = new UnitUtil();
+
+        Map<String, String> config = uu.createTaskConfig();
+
+        config.put(SplunkSinkConnectorConfig.SSL_TRUSTSTORE_PATH_CONF, null);
+        SplunkSinkConnectorConfig connectorConfig = new SplunkSinkConnectorConfig(config);
+
+        Assert.assertFalse(connectorConfig.usingTrustStore);
+    }
+
+    @Test
+    public void checkValidTrustStore() {
+        UnitUtil uu = new UnitUtil();
+        Map<String, String> config = uu.createTaskConfig();
+        SplunkSinkConnectorConfig connectorConfig = new SplunkSinkConnectorConfig(config);
+
+        Assert.assertTrue(connectorConfig.usingTrustStore);
+    }
+
     private void assertMeta(final SplunkSinkConnectorConfig connectorConfig) {
         UnitUtil uu = new UnitUtil();
 
@@ -228,4 +249,5 @@ public class SplunkSinkConnectorConfigTest {
         Assert.assertEquals(uu.maxBatchSize, connectorConfig.maxBatchSize);
         Assert.assertEquals(uu.numOfThreads, connectorConfig.numberOfThreads);
     }
+
 }

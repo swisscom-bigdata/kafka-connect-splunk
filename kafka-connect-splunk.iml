@@ -35,5 +35,6 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.0.0" level="project" />
+    <orderEntry type="library" name="org.apache.commons:commons-lang3:3.7" level="project" />
   </component>
 </module>

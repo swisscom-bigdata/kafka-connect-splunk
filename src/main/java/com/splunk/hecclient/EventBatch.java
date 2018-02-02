@@ -30,7 +30,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * EventBatch is
+ * EventBatch represents a collection of Events that have been put together to be sent as one unit.
+ * An EventBatch can have 3 states which are represented int the variable status.
+ *      0 INIT     - Initialized
+ *      1 COMMITTED - Committed
+ *      2 FAILED   - Failed
  * <p>
  * This class contains
 

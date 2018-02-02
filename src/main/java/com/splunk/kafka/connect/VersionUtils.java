@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Splunk, Inc..
+ * Copyright 2017-2018 Splunk, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * VersionUtils is
+ * VersionUtils is a utility class for working with the version properties file version.properties.
  * <p>
- * This class contains
+ * This class contains helper functions to return the version back to the Splunk Kafka Connector.
 
  *
  * @version     1.0
@@ -40,8 +40,7 @@ public final class VersionUtils {
     private static final Logger log = LoggerFactory.getLogger(VersionUtils.class);
 
     /**
-     * Returns the version string that is set in the version.properties
-     * resource file
+     * Returns the version string that is set in the version.properties resource file.
      *
      * @return version string
      * @since           1.0
@@ -53,7 +52,7 @@ public final class VersionUtils {
     }
 
     /**
-     * Returns the version string gets from the list of properties.
+     * Returns the version string  from the list of properties.
      * If version string does not exist, returns the default version.
      *
      * @param properties list of git properties
@@ -79,7 +78,7 @@ public final class VersionUtils {
     }
 
     /**
-     * Returns a list of properties by reading version properties file
+     * Returns a list of properties by reading version properties file.
      *
      * @return list of properties
      * @since  1.0
@@ -89,8 +88,8 @@ public final class VersionUtils {
     }
 
     /**
-     * Returns a list of properties by reading given resource file
-     * Each line in the file is an item of the list
+     * Returns a list of properties by reading the given resource file. Each line in the file is an item of the list.
+     * An IOException is caught if there is an issue reading the properties file.
      * 
      * @param resourceFileName name of the resource file
      * @return                 list of properties
