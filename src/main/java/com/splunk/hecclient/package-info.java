@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * The hecclient library is a Http Event Collector (HEC for short) library for Splunk which covers the following features
  * 1. Post events to /event HEC endpoint

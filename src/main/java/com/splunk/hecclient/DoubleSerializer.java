@@ -26,11 +26,12 @@ import java.math.BigDecimal;
 /**
  * DoubleSerializer is
  * <p>
- * This class contains
-
+ * This class contains an overridden serialize method that will handle a Double value used exclusively with the Event classes
+ * timestamp.
  *
  * @version     1.0
  * @since       1.0
+ * @see         Event
  */
 public class DoubleSerializer extends JsonSerializer<Double> {
 
