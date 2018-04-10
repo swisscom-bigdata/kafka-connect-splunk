@@ -22,6 +22,13 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Collections;
+import org.apache.kafka.connect.header.Header;
+import org.apache.kafka.common.header.Headers;
+
 
 import java.util.*;
 
@@ -38,6 +45,7 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
     private List<SinkRecord> bufferedRecords;
     private long lastFlushed = System.currentTimeMillis();
     private long threadId = Thread.currentThread().getId();
+    private SinkRecord record;
 
     @Override
     public void start(Map<String, String> taskConfig) {
@@ -260,13 +268,31 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
             event.setTime(record.timestamp() / 1000.0);
         }
 
+
         Map<String, String> metas = connectorConfig.topicMetas.get(record.topic());
         if (metas != null) {
+
             event.setIndex(metas.get(SplunkSinkConnectorConfig.INDEX));
             event.setSourcetype(metas.get(SplunkSinkConnectorConfig.SOURCETYPE));
             event.setSource(metas.get(SplunkSinkConnectorConfig.SOURCE));
+
+            for (Header header : record.headers()) {
+                if (header.key().equals("source")){
+                    String sourceOverride = header.value().toString();
+                    event.setSource(sourceOverride);
+                } else if (header.key().equals("sourcetype")){
+                    String sourcetypeOverride = header.value().toString();
+                    event.setSourcetype(sourcetypeOverride);
+                } else if (header.key().equals("index")){
+                    String indexOverride = header.value().toString();
+                    event.setIndex(indexOverride);
+                }
+            }
+
             event.addFields(connectorConfig.enrichments);
         }
+
+
 
         if (connectorConfig.trackData) {
             // for data loss, latency tracking
@@ -275,6 +301,12 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
             trackMetas.put("kafka_timestamp", String.valueOf(record.timestamp()));
             trackMetas.put("kafka_topic", record.topic());
             trackMetas.put("kafka_partition", String.valueOf(record.kafkaPartition()));
+            trackMetas.put("kafka_headers", String.valueOf(record.headers()));
+
+            for (Header header : record.headers()) {
+                trackMetas.put(header.key(), String.valueOf(header.value()));
+            }
+
             event.addFields(trackMetas);
         }
 
@@ -282,6 +314,7 @@ public final class SplunkSinkTask extends SinkTask implements PollerCallback {
 
         return event;
     }
+
 
     private Event createHecEventFromMalformed(final SinkRecord record) {
         Object data;
