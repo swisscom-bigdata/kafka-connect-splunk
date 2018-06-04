@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.splunk.hecclient;
+package com.splunk.kafka.connect;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class JacksonStructModule extends SimpleModule {
+public class JacksonStructModule extends SimpleModule {
   public JacksonStructModule() {
     addSerializer(Struct.class, new StructSerializer());
   }

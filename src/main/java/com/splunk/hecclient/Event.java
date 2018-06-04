@@ -36,7 +36,7 @@ public abstract class Event {
     static final ObjectMapper jsonMapper;
     static {
         jsonMapper = new ObjectMapper();
-        jsonMapper.registerModule(new JacksonStructModule());
+        jsonMapper.registerModule(new com.splunk.kafka.connect.JacksonStructModule());
         jsonMapper.setDateFormat(StdDateFormat.instance);
     }
 
